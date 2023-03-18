@@ -14,7 +14,7 @@ nav {
 
 nav > div {
   @apply container;
-  @apply max-w-xl;
+  /* @apply max-w-xl; */
   @apply flex;
   @apply content-center;
   @apply items-center;

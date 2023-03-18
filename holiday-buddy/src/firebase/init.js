@@ -29,7 +29,10 @@ export function useAuth() {
     const googleProvider = new firebase.auth.GoogleAuthProvider()
     await auth.signInWithPopup(googleProvider)
   }
-  const signOut = () => auth.signOut()
+  const signOut = () =>{ 
+    sessionStorage.clear()
+    auth.signOut()
+  }
 
   return { user, isLogin, signIn, signOut }
 }
@@ -65,10 +68,10 @@ export function useChat() {
     if (!isLogin.value) return
 
     messagesCollection.add({
-      userName: 'Chat-Gpt',
+      userName: 'Buddy',
       userId: '',
       userPhotoURL: 'https://media0.giphy.com/media/S60CrN9iMxFlyp7uM8/giphy.gif?cid=ecf05e47n7lwku1vxtaln9yvhza2r3aih4u6jd60bmy72slm&rid=giphy.gif&ct=g',
-      text: filter.clean(text),
+      text: filter.clean(JSON.stringify(text)),
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     })
   }

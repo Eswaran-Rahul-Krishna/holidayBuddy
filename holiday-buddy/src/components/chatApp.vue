@@ -1,4 +1,5 @@
 <template>
+  <Nav />
   <div class="container-sm mt-20">
     <div class="mx-5">
       <Message
@@ -18,13 +19,14 @@
   <div class="bottom">
     <div class="container-sm">
       <form v-if="isLogin" @submit.prevent="send">
-        <input v-model="message" placeholder="Message" required />
+        <input v-model="message" placeholder="Message" />
         <button type="submit">
           <SendIcon />
         </button>
 
-        <button class="ask-buddy" @click="askBuddy">Ask Buddy</button>
+        <button class="btn btn-primary" @click="askBuddy" style="padding: 7px 36px;">Ask Buddy</button>
 
+        <button class="ml-3 btn btn-outline-success" @click="navigateToTravelGuide">Get Travel Details</button>
       </form>
     </div>
   </div>
@@ -37,12 +39,16 @@ import { useAuth, useChat } from '../firebase/init.js'
 import SendIcon from './SendIcon.vue'
 import Message from './chatMessage.vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router';
+
+import Nav from '@/components/app-header/Nav-header.vue';
 
 export default {
-  components: { Message, SendIcon },
+  components: { Message, SendIcon, Nav },
   setup() {
     const { user, isLogin } = useAuth()
     const { messages, sendMessage,sendAssistantMessage } = useChat()
+    const router = useRouter()
 
     const bottom = ref(null)
     watch(
@@ -79,33 +85,31 @@ export default {
   });
     }
 
-    return { user, isLogin, messages, bottom, message, send, askBuddy }
+    const navigateToTravelGuide = async () => {
+      sessionStorage.setItem("Messages", messages._rawValue);
+        await  axios.post('https://call-chat-gpt.azurewebsites.net/api/GetTravelItinerary?code=mKnycowDm697fLtP8j6BvbRQ5YWY1kZOvArcLgY-PvhFAzFulje9HQ==', messages._rawValue).then((response) => {
+         // console.log(response.data)
+        sessionStorage.setItem("TravelDetailsMetaData", JSON.stringify(response.data));
+       sessionStorage.setItem("Messages",JSON.stringify( messages._rawValue));
+
+        }).catch(error => {
+           console.error(error);
+          });
+      
+        const data = sessionStorage.getItem("Messages");
+        console.log(data)
+        axios.post('https://call-chat-gpt.azurewebsites.net/api/PdfGenerator?code=H3wsbu7iuGmuecZXvOPvY-YrmuV8D4_L6jBHS__m-f09AzFuYBGMvg==',data).then((response) => {
+        console.log(response.data)
+        sessionStorage.setItem("ExportPdfHtml", response.data);
+        
+      }).catch(error => {
+    console.error(error);
+  });
+        
+        router.push({ path: "/travel-guide" });
+    }
+
+    return { user, isLogin, messages, bottom, message, send, askBuddy, navigateToTravelGuide}
   }
 }
 </script>
-
-<style scoped>
-
-.ask-buddy {
-  background: #ac806f;
-}
-
-.ask-buddy {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 20px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #fff;
-  background-color: #ac806f;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.ask-buddy:hover {
-  transform: scale(1.05);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-
-</style>
