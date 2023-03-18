@@ -42,7 +42,7 @@ export default {
   components: { Message, SendIcon },
   setup() {
     const { user, isLogin } = useAuth()
-    const { messages, sendMessage } = useChat()
+    const { messages, sendMessage,sendAssistantMessage } = useChat()
 
     const bottom = ref(null)
     watch(
@@ -64,12 +64,19 @@ export default {
     }
 
     const askBuddy = async () => {
+     // console.log(messages._rawValue)
+      if (message.value) {
+        await sendMessage(message.value)
+        message.value = ''
+      }
 
-      console.log('inside ask buddy')
-
-      axios.post('https://call-chat-gpt.azurewebsites.net/api/TravelDecider?code=IoqmIMn6EoviomHN4NytkpEgNkRgIcDYc8v8ggRjLhIqAzFuEYktlw==').then((response) => {
-        console.log(response.data)
-      });
+     await  axios.post('https://call-chat-gpt.azurewebsites.net/api/TravelDecider?code=IoqmIMn6EoviomHN4NytkpEgNkRgIcDYc8v8ggRjLhIqAzFuEYktlw==', messages._rawValue).then((response) => {
+       // console.log(response.data)
+         sendAssistantMessage(response.data)
+      })
+  .catch(error => {
+    console.error(error);
+  });
     }
 
     return { user, isLogin, messages, bottom, message, send, askBuddy }
