@@ -96,15 +96,6 @@ export default {
            console.error(error);
           });
       
-        const data = sessionStorage.getItem("Messages");
-        console.log(data)
-        axios.post('https://call-chat-gpt.azurewebsites.net/api/PdfGenerator?code=H3wsbu7iuGmuecZXvOPvY-YrmuV8D4_L6jBHS__m-f09AzFuYBGMvg==',data).then((response) => {
-        console.log(response.data)
-        sessionStorage.setItem("ExportPdfHtml", response.data);
-        
-      }).catch(error => {
-    console.error(error);
-  });
         
         router.push({ path: "/travel-guide" });
     }

@@ -6,6 +6,7 @@
   
   <script>
   import html2pdf from 'html2pdf.js';
+  import axios from 'axios'
   
   export default {
     name: 'PdfDownloadButton',
@@ -23,8 +24,17 @@
           jsPDF: { unit: 'pt', format: 'letter', orientation: 'portrait' }
         };
 
-        const data = sessionStorage.getItem("ExportPdfHtml");
-  html2pdf().set(options).from(data).save();
+        
+        const data = sessionStorage.getItem("Messages");
+        console.log(data)
+        axios.post('https://call-chat-gpt.azurewebsites.net/api/PdfGenerator?code=H3wsbu7iuGmuecZXvOPvY-YrmuV8D4_L6jBHS__m-f09AzFuYBGMvg==',data).then((response) => {
+        console.log(response.data)
+        sessionStorage.setItem("ExportPdfHtml", response.data);
+        html2pdf().set(options).from(response.data).save();
+      }).catch(error => {
+    console.error(error);
+  });
+  
       }
     }
   };
