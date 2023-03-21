@@ -24,9 +24,9 @@
           <SendIcon />
         </button>
 
-        <button class="btn btn-primary" @click="askBuddy" style="padding: 7px 36px;">Ask Buddy</button>
+        <button class="btn btn-primary" @click="askBuddy" style="padding: 7px 36px;" :disabled="isButtonDisabled">Ask Buddy</button>
 
-        <button class="ml-3 btn btn-outline-success" @click="navigateToTravelGuide">Get Travel Details</button>
+        <button class="ml-3 btn btn-outline-success" @click="navigateToTravelGuide" :disabled="isNavigateButtonDisabled">Get Travel Details</button>
       </form>
     </div>
   </div>
@@ -49,6 +49,8 @@ export default {
     const { user, isLogin } = useAuth()
     const { messages, sendMessage,sendAssistantMessage } = useChat()
     const router = useRouter()
+   const isButtonDisabled = ref(false);
+   const isNavigateButtonDisabled = ref(false);
 
     const bottom = ref(null)
     watch(
@@ -57,7 +59,7 @@ export default {
         nextTick(() => {
           bottom.value?.scrollIntoView({ behavior: 'smooth' })
         })
-      },
+      },     
       { deep: true }
     )
 
@@ -76,31 +78,36 @@ export default {
         message.value = ''
       }
 
+      isButtonDisabled.value = true;
      await  axios.post('https://call-chat-gpt.azurewebsites.net/api/TravelDecider?code=IoqmIMn6EoviomHN4NytkpEgNkRgIcDYc8v8ggRjLhIqAzFuEYktlw==', messages._rawValue).then((response) => {
        // console.log(response.data)
          sendAssistantMessage(response.data)
+         isButtonDisabled.value = false;
       })
   .catch(error => {
     console.error(error);
+    isButtonDisabled.value = false;
   });
     }
 
     const navigateToTravelGuide = async () => {
+      isNavigateButtonDisabled.value = true;
       sessionStorage.setItem("Messages", messages._rawValue);
         await  axios.post('https://call-chat-gpt.azurewebsites.net/api/GetTravelItinerary?code=mKnycowDm697fLtP8j6BvbRQ5YWY1kZOvArcLgY-PvhFAzFulje9HQ==', messages._rawValue).then((response) => {
          // console.log(response.data)
         sessionStorage.setItem("TravelDetailsMetaData", JSON.stringify(response.data));
        sessionStorage.setItem("Messages",JSON.stringify( messages._rawValue));
-
+       isNavigateButtonDisabled.value = false;
         }).catch(error => {
            console.error(error);
+           isNavigateButtonDisabled.value = false;
           });
       
         
         router.push({ path: "/travel-guide" });
     }
 
-    return { user, isLogin, messages, bottom, message, send, askBuddy, navigateToTravelGuide}
+    return { user, isLogin, messages, bottom, message, send, askBuddy, navigateToTravelGuide,isButtonDisabled,isNavigateButtonDisabled}
   }
 }
 </script>
