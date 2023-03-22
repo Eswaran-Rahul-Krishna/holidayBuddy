@@ -1,5 +1,5 @@
 <template>
-  <Nav />
+ <Nav />
   <div class="container-sm mt-20">
     <div class="mx-5">
       <Message
@@ -11,6 +11,10 @@
       >
         {{ text }}
       </Message>
+
+      <ChatTypingIndicator   v-if="isButtonDisabled">
+       Buddy typing ...
+      </ChatTypingIndicator>
     </div>
   </div>
 
@@ -42,9 +46,10 @@ import axios from 'axios'
 import { useRouter } from 'vue-router';
 
 import Nav from '@/components/app-header/Nav-header.vue';
+import ChatTypingIndicator from './chatTypingIndicator.vue';
 
 export default {
-  components: { Message, SendIcon, Nav },
+  components: { Message, SendIcon, Nav ,ChatTypingIndicator },
   setup() {
     const { user, isLogin } = useAuth()
     const { messages, sendMessage,sendAssistantMessage } = useChat()
@@ -76,7 +81,7 @@ export default {
       if (message.value) {
         await sendMessage(message.value)
         message.value = ''
-      }
+      }      
 
       isButtonDisabled.value = true;
      await  axios.post('https://call-chat-gpt.azurewebsites.net/api/TravelDecider?code=IoqmIMn6EoviomHN4NytkpEgNkRgIcDYc8v8ggRjLhIqAzFuEYktlw==', messages._rawValue).then((response) => {
