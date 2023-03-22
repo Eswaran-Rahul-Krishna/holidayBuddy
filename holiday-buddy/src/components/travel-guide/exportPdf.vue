@@ -10,7 +10,6 @@
   
   <script>
   import html2pdf from 'html2pdf.js';
-  import axios from 'axios'
   
   export default {
     name: 'PdfDownloadButton',
@@ -26,7 +25,7 @@ return {
     },
     methods: {
      async downloadPDF() {
-      this.isButtonDisabled = true;
+     // this.isButtonDisabled = true;
         const options = {
           filename: 'travel-plan.pdf',
           image: { type: 'jpeg', quality: 1 },
@@ -35,18 +34,22 @@ return {
         };
 
         
-        const data = sessionStorage.getItem("Messages");
-        console.log(data)
-        axios.post('https://call-chat-gpt.azurewebsites.net/api/PdfGenerator?code=H3wsbu7iuGmuecZXvOPvY-YrmuV8D4_L6jBHS__m-f09AzFuYBGMvg==',data).then((response) => {
-        console.log(response.data)
-        sessionStorage.setItem("ExportPdfHtml", response.data);
-        html2pdf().set(options).from(response.data).save();
-        this.isButtonDisabled = false;
-      }).catch(error => {
-    console.error(error);
-    this.isButtonDisabled = false;
-  });
-  
+        //const data = sessionStorage.getItem("Messages");
+       
+        // axios.post('https://call-chat-gpt.azurewebsites.net/api/PdfGenerator?code=H3wsbu7iuGmuecZXvOPvY-YrmuV8D4_L6jBHS__m-f09AzFuYBGMvg==',data).then((response) => {
+        // console.log(response.data)
+    //     sessionStorage.setItem("ExportPdfHtml", response.data);
+     // html2pdf().set(options).from(response.data).save();
+    //     this.isButtonDisabled = false;
+    //   }).catch(error => {
+    // console.error(error);
+    // this.isButtonDisabled = false;
+  //});
+  // const element =document.getElementById("travel-details");
+  //   const htmlContent = element?.innerHTML;
+  //   const htmlString = htmlContent?.toString();
+  console.log(this.htmlContent)
+  html2pdf().set(options).from(this.htmlContent).save();
       }
     }
   };

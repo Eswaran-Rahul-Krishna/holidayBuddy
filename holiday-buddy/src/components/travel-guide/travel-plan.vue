@@ -9,10 +9,10 @@
         </div>
       </div>
       <div v-else>
-        <div class="row h3 p-4 text-white bg-secondary">{{ day.day }}</div>
+        <div class="row h3 p-4 text-white bg-secondary">Day {{ index + 1 }}</div>
         <div class="row">
           <div v-for="(activity, index) in day.activities" :key="index" 
-              class="col-4 card m-2" style="width: 18rem; flex-wrap: nowrap;">
+              class="col-4 card m-2" style="width: 18rem; flex-wrap: nowrap;background-color: #e5e7e9;">
               <div class="card-body">
                 <h5 class="card-title">{{ activity }}</h5>
                 <!-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>

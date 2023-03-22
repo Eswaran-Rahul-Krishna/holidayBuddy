@@ -15,6 +15,9 @@
       <ChatTypingIndicator   v-if="isButtonDisabled">
        Buddy typing ...
       </ChatTypingIndicator>
+      <ChatTypingIndicator   v-if="isNavigateButtonDisabled">
+       <b>Buddy is preparing your travel itinerary...</b>
+      </ChatTypingIndicator>
     </div>
   </div>
 
