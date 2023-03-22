@@ -10,6 +10,7 @@ import SignIn from './components/signIn/sign-in.vue'
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import '@fortawesome/fontawesome-free/css/all.css'
 
 const router = createRouter({
   history: createWebHistory(),

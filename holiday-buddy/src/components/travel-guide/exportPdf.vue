@@ -1,7 +1,11 @@
 <template>
-    <div>
-      <button @click="downloadPDF" style="color: #eeecec; background: black;">Export as pdf</button>
-    </div>
+    <div style="display: flex;align-content: center;justify-content: center;padding-bottom: 50px;">
+      <!-- <button @click="downloadPDF" style="color: #eeecec; background: black;">Export as pdf</button> -->
+      <!-- <button class="btn btn-primary bi bi-file-pdf" style="    width: 231px;display: flex; justify-content: center;">Export</button> -->
+      <button class="btn btn-primary" @click="downloadPDF" :disabled="isButtonDisabled">
+      <i class="fas fa-file-pdf"></i> Export as PDF
+    </button>
+  </div>
   </template>
   
   <script>
@@ -15,8 +19,14 @@
         type: String
       }
     },
+    data(){
+return {
+  isButtonDisabled:false
+}
+    },
     methods: {
      async downloadPDF() {
+      this.isButtonDisabled = true;
         const options = {
           filename: 'travel-plan.pdf',
           image: { type: 'jpeg', quality: 1 },
@@ -31,8 +41,10 @@
         console.log(response.data)
         sessionStorage.setItem("ExportPdfHtml", response.data);
         html2pdf().set(options).from(response.data).save();
+        this.isButtonDisabled = false;
       }).catch(error => {
     console.error(error);
+    this.isButtonDisabled = false;
   });
   
       }
