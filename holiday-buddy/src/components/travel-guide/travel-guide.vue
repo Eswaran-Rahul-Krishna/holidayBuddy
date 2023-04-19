@@ -1,53 +1,36 @@
 <template>
-  <TravelPlans class="travel-plan-container" :days="days"></TravelPlans>
+  <Nav />
+  <TravelPlans id="travel-details" class="travel-plan-container" :days="days"></TravelPlans>
+  <ExportPDF :htmlContent="pdfData"></ExportPDF>
+  <!-- <Loader></Loader> -->
 </template>
 
 <script>
-import TravelPlans from './travel-plan.vue'
+import TravelPlans from './travel-plan.vue';
+import Nav from '@/components/app-header/Nav-header.vue';
+import ExportPDF from './exportPdf.vue'
 
 export default {
-  components: { TravelPlans },
+  components: { TravelPlans, Nav, ExportPDF },
   data() {
-    return {
-      days: [
-        [],
-        [
-          { time: '8:00 AM', details: 'Breakfast at hotel' },
-          { time: '10:00 AM', details: 'Visit to Museum A' },
-          { time: '1:00 PM', details: 'Lunch at Restaurant B' },
-          { time: '3:00 PM', details: 'Sightseeing at Landmark C' },
-          { time: '6:00 PM', details: 'Dinner at Restaurant D' }
-        ],
-        [
-          { time: '9:00 AM', details: 'Visit to Landmark E' },
-          { time: '12:00 PM', details: 'Lunch at Restaurant F' },
-          { time: '2:00 PM', details: 'Shopping at Mall G' },
-          { time: '5:00 PM', details: 'Visit to Park H' },
-          { time: '7:00 PM', details: 'Dinner at Restaurant I' }
-        ],
-        [
-          { time: '10:00 AM', details: 'Visit to Landmark J' },
-          { time: '1:00 PM', details: 'Lunch at Restaurant K' },
-          { time: '3:00 PM', details: 'Visit to Museum L' },
-          { time: '6:00 PM', details: 'Dinner at Restaurant M' }
-        ],
-        [
-          { time: '8:00 AM', details: 'Breakfast at hotel' },
-          { time: '10:00 AM', details: 'Visit to Park N' },
-          { time: '1:00 PM', details: 'Lunch at Restaurant O' },
-          { time: '3:00 PM', details: 'Sightseeing at Landmark P' },
-          { time: '6:00 PM', details: 'Dinner at Restaurant Q' }
-        ]
-      ]
-    }
+    let travelDetailsMetaData = JSON.parse(sessionStorage.getItem('TravelDetailsMetaData'));
+
+    return { days: travelDetailsMetaData,pdfData:'' };
+  },
+  mounted(){
+    const element =document.getElementById("travel-details");
+    const htmlContent = element?.innerHTML;
+    const pdfHeader = '<br><div style="display:flex;flex-direction: column;align-items: center; padding-down:20px"><h1 style="color: black;/* top: 10px; *//* position: relative; */"> Holiday Buddy</h1> <br> <br><br><b>  Your trip plan details<b></b></b></div><br> <br>' ;
+    this.pdfData = pdfHeader + htmlContent?.toString();
   }
+
 }
 </script>
 
 <style scoped>
 .travel-plan-container {
   position: relative;
-  z-index: 200;
-  top: 90px;
+  margin-top: 4.5rem;
+  margin-bottom: 4rem;
 }
 </style>

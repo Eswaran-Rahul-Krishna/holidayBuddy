@@ -29,7 +29,10 @@ export function useAuth() {
     const googleProvider = new firebase.auth.GoogleAuthProvider()
     await auth.signInWithPopup(googleProvider)
   }
-  const signOut = () => auth.signOut()
+  const signOut = () =>{ 
+    sessionStorage.clear()
+    auth.signOut()
+  }
 
   return { user, isLogin, signIn, signOut }
 }

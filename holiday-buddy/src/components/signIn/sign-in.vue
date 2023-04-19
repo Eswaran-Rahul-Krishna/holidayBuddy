@@ -1,14 +1,29 @@
 <template>
-  <div class="travel-signin-container">
-    <div class="animation-container">
-      <i
-        class="fas fa-plane travel-icon"
-        :class="{ 'bounce-animation': bounce }"
-      ></i>
+  <div class="container sign-in bg-white">
+    <div class="row">
+      <div class="col">
+        <img src="../../assets/logo.png"/>
+      </div>
+      <div class="col text-white" style="background-color: #270949;">
+        <div class="my-4 mx-5">
+          <div class="row my-5 align-items-center">
+            <div class="py-4" style="margin-top: auto; margin-bottom: auto;">
+              <div class="h3 mb-4">Welcome</div>
+              <div>Pack your bags, it's time to explore! Whether you're a globe-trotting pro or a first-time adventurer, we've got your back. Let's venture into the unknown, buckle up and go on an adventure together!</div>
+              <div class="mt-4">
+                <button class="btn btn-primary px-5" @click="signInToApp">
+                  <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-end">
+              <div>info@apexon.com</div>
+              <div>079-67771222</div>
+          </div>
+        </div>
+      </div>
     </div>
-    <button class="signin-button" @click="signInToApp">
-      <i class="fas fa-sign-in-alt"></i> Sign In
-    </button>
   </div>
 </template>
 
@@ -47,51 +62,7 @@ export default {
 </script>
 
 <style scoped>
-.travel-signin-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.animation-container {
-  margin-bottom: 50px;
-}
-
-.travel-icon {
-  font-size: 5rem;
-}
-
-.bounce-animation {
-  animation-name: bounce;
-  animation-duration: 1s;
-}
-
-.signin-button {
-  padding: 1rem 2rem;
-  font-size: 1.5rem;
-  border-radius: 5px;
-  background-color: #1abc9c;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.signin-button:hover {
-  background-color: #16a085;
-}
-
-@keyframes bounce {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0);
-  }
+.sign-in {
+  margin-top: 4rem;
 }
 </style>
