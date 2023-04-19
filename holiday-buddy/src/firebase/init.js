@@ -61,5 +61,17 @@ export function useChat() {
     })
   }
 
-  return { messages, sendMessage }
+  const sendAssistantMessage = text => {
+    if (!isLogin.value) return
+
+    messagesCollection.add({
+      userName: 'Buddy',
+      userId: '',
+      userPhotoURL: 'https://media0.giphy.com/media/S60CrN9iMxFlyp7uM8/giphy.gif?cid=ecf05e47n7lwku1vxtaln9yvhza2r3aih4u6jd60bmy72slm&rid=giphy.gif&ct=g',
+      text: filter.clean(JSON.stringify(text)),
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    })
+  }
+
+  return { messages, sendMessage, sendAssistantMessage }
 }
